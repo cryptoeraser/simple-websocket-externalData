@@ -17,12 +17,12 @@ ws.onclose = function() {
 // onMessage {{{1
 ws.onmessage = function(payload) {
     // Debug
-    console.log('[client] received reply:', payload.data);
+    // console.log('[client] received reply:', payload.data);
 
     // Handle incoming transmission.
     var transmission = JSON.parse(payload.data);
     if(transmission['data'] === null){
-        console.log('plain_reply');
+        // console.log('plain_reply');
         printMessage(transmission.message);
     }
     else {
@@ -30,7 +30,7 @@ ws.onmessage = function(payload) {
         // This a bad practice as we are relying on a shared global
         // scope. However, this might be ok for now.
         generateTable(transmission.data);
-        console.log('container with data');
+        // console.log('container with data');
     }
 };
 // }}}1

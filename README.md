@@ -13,3 +13,16 @@ exchange, a sensor reading, anything.
 src="https://github.com/cryptoeraser/simple-websocket-externalData/blob/master/docs/simple-websocket-externalData_dataWriterDemo.gif">
 <p align="center"><font size="1">Demo results for the data_writer tool.</font></p>
 </p>
+
+## The Data Writer ##
+The server/client workflow.
+
+<p align="center">
+<img width="800" alt="Sample Result"
+src="https://github.com/cryptoeraser/simple-websocket-externalData/blob/master/docs/simple-websocket-externalData_serverClientDemo.gif">
+<p align="center"><font size="1">Demo results for the server/client workflow.</font></p>
+</p>
+
+## Credits ##
+Special thanks to:
+[My mentor and friend Diego Perini](https://github.com/diegoperini)

@@ -26,6 +26,7 @@ fs.watch('./data/object.json', (eventType, filename) => {
             // obj.dataReadTime = new Date();
             // obj.delayBetweenWriteRead = obj.dataReadTime.getTime() - obj.dataInsertTime.getTime()
             console.log(obj);
+            emission()
         });
     }
 
