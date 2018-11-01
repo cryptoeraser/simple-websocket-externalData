@@ -47,8 +47,8 @@ var data_container = {
 var emitter = function() {};
 
 // Define a hook for the emission point.
-var emission = function(emissionObject) {
-    emitter(emissionObject);
+var emission = function(data) {
+    emitter(data);
 };
 
 // This needs to be in the message section (onMessage) is still am option as we
@@ -57,10 +57,11 @@ var emission = function(emissionObject) {
 
 wss.on('connection', function(ws) {
     // Plugin the emission hook.
-    emitter = function(emissionObject) {
+    emitter = function(data) {
         wss.clients.forEach(function(client) {
+            let message = 'none'
             // First update the JSON object by adding the message component.
-            // obj['feedback'] = message;
+            obj['feedback'] = message;
             console.log('--->', obj);
             // Then update carrier.
             data_container['data']  = obj;
@@ -70,7 +71,7 @@ wss.on('connection', function(ws) {
             var transmission = JSON.stringify(data_container);
 
             // Send the transmission.
-            console.log('[server:onMessage] Sending:', transmission);
+            console.log('[server:onConnect] Sending:', transmission);
             client.send(transmission);
         });
     };
@@ -85,6 +86,11 @@ wss.on('connection', function(ws) {
 
     // Send carrier.
     ws.send(transmission);
+
+    ws.on('message', function(message) {
+        // Debug
+        console.log('[server:onMessage] received request:', message);
+    });
 });
 
 // vim: fdm=marker ts=4
