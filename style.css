@@ -1,30 +1,37 @@
+p.intro {
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 16px;
+}
+
 .zui-table {
-  border: solid 1px #DDEEEE;
-  border-collapse: collapse;
-  border-spacing: 0;
-  font: normal 12px Arial, sans-serif;
+    border: solid 1px #DDEEEE;
+    background-color: #DDEFEF;
+    border-collapse: collapse;
+    /* border-spacing: 4; */
+    /* height: 8px; */
+    font: normal 10px Arial, sans-serif;
 }
 
-.zui-table th {
-  background-color: #DDEFEF;
-  border: solid 2px #DDEEEE;
-  color: #336B6B;
-  padding: 10px;
-  text-align: left;
-  text-shadow: 1px 1px 1px #fff;
-}
-
-.zui-table td.label {
-  border: solid 2px #DDEEEE;
-  color: #7553;
-  padding: 10px;
-  text-shadow: 1px 1px 1px #fff;
+.zui-table th.label {
+    background-color: #DDEFEF;
+    border: solid 2px #DDEEEE;
+    color: #336B6B;
+    padding: 12px;
+    height: 8px;
+    text-align: center;
+    text-shadow: 1px 1px 1px #fff;
+    /* font-family: 'Baloo', cursive; */
+    font-family: 'Miriam Libre', sans-serif;
 }
 
 .zui-table td[class^='feedback'] {
-  background-color: #F2F4F4;
-  border: solid 2px #DDEEEE;
-  color: #D6DBDF;
-  padding: 10px;
-  text-shadow: 1px 1px 1px #fff;
+    background-color: #F2F4F4;
+    /* border-color: #E74C3C; */
+    border: solid 2px #DDEEEE;
+    border-radius: 8px;
+    color: #D6DBDF;
+    padding: 10px;
+    height: 8px;
+    text-shadow: 1px 1px 1px #fff;
+    font-family: 'Chakra Petch', sans-serif;
 }

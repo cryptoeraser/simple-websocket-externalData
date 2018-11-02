@@ -5,17 +5,22 @@
         <meta charset="utf-8">
         <title>Websocket</title>
         <link rel="stylesheet" href="style.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Chakra+Petch|Miriam+Libre|Titillium+Web" rel="stylesheet">
+    
     </head>
     <body>
-        <h1>Websocket Test</h1>
+        <p class="intro" style="font-size:24px">Websocket Test</p>
         <!-- Status Table (start) --!>
         <table class="zui-table">
             <tr>
                 <th class="label">STATUS</th>
                 <td class="feedback" id="connected">connected</td>
                 <td class="feedback" id="disconnected">disconnected</td>
+                <th class="label">RESPONSE</th>
                 <td class="feedback" id="client_input">client_input</td>
                 <td class="feedback" id="server_reply">server_reply</td>
+                <th class="label">FEED</th>
+                <td class="feedback" id="offline">offline</td>
             </tr>
         </table>
         <!-- Status Table (__end) --!>
