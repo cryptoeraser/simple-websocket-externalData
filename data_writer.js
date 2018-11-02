@@ -46,4 +46,4 @@ setInterval(function() {
         }
         // console.log("File has been created");
     });
-}, 0);
+}, 500);

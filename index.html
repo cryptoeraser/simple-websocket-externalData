@@ -8,9 +8,27 @@
     </head>
     <body>
         <h1>Websocket Test</h1>
-        <h2>Status</h2>
+        <!-- Status Table (start) --!>
+        <table class="zui-table">
+            <tr>
+                <th class="label">STATUS</th>
+                <td class="feedback" id="connected">connected</td>
+                <td class="feedback" id="disconnected">disconnected</td>
+                <td class="feedback" id="client_input">client_input</td>
+                <td class="feedback" id="server_reply">server_reply</td>
+            </tr>
+        </table>
+        <!-- Status Table (__end) --!>
         <div class="messages"></div>
         <p id="showData"></p>
+        <div class="asset_menu">
+            <select name="assets" onchange="doSomething(this.selectedIndex);">
+                <option value="btc" selected>BTC</option>
+                <option value="eth">ETH</option>
+                <option value="zec">ZEC</option>
+                <option value="xmr">XMR</option>
+            </select>
+        </div>
         <input type="button" onclick="sendRequest();" id="button" value="Request" />
         <script src="ws-client.js"></script>
         <script src="./script.js"></script>

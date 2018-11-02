@@ -1,0 +1,30 @@
+.zui-table {
+  border: solid 1px #DDEEEE;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font: normal 12px Arial, sans-serif;
+}
+
+.zui-table th {
+  background-color: #DDEFEF;
+  border: solid 2px #DDEEEE;
+  color: #336B6B;
+  padding: 10px;
+  text-align: left;
+  text-shadow: 1px 1px 1px #fff;
+}
+
+.zui-table td.label {
+  border: solid 2px #DDEEEE;
+  color: #7553;
+  padding: 10px;
+  text-shadow: 1px 1px 1px #fff;
+}
+
+.zui-table td[class^='feedback'] {
+  background-color: #F2F4F4;
+  border: solid 2px #DDEEEE;
+  color: #D6DBDF;
+  padding: 10px;
+  text-shadow: 1px 1px 1px #fff;
+}
