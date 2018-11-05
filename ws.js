@@ -7,8 +7,9 @@ var fs = require('fs');
 var DATA_FEED_IS_ACTIVE = false;
 var CHANGING = false;
 var TIMER = null;
+var DATA_CHECK_TIMER = null;
 
-// Function to handle data feed check.
+// Function to handle data feed check.{{{1
 function checkChanging() {
     if (!CHANGING) {
         clearInterval(TIMER);
@@ -20,8 +21,9 @@ function checkChanging() {
     }
     CHANGING = false;
 }
+// }}}1
 
-// External Data Import {{{1
+// External Data Loop {{{1
 // Watch Loop: Works only when there is a change in the watched file.
 fs.watch('./data/object.json', (eventType, filename) => {
     // console.log('event type is:', eventType);
@@ -49,31 +51,22 @@ fs.watch('./data/object.json', (eventType, filename) => {
             // read time is too big.
             // obj.dataReadTime = new Date();
             // obj.delayBetweenWriteRead = obj.dataReadTime.getTime() - obj.dataInsertTime.getTime()
-            myEventType = eventType;
-            // console.log(obj);
-            // console.log('___C');
             emission(obj);
         });
     }
-
-    // if (filename) {
-    //     console.log(`filename provided: ${filename}`);
-    // } else {
-    //     console.log('filename not provided');
-    // }
 });
 // }}}1
 
-// Data Feed Monitor {{{1
+// Data Feed Loop {{{1
 if(!DATA_FEED_IS_ACTIVE){
-    data_check = setInterval( function() {
+    DATA_CHECK_TIMER = setInterval( function() {
         console.log('__CHECK_DATA_FEED__');
-        console.log('>>>', DATA_FEED_IS_ACTIVE);
+        console.log('DATA_FEED_IS_ACTIVE:', DATA_FEED_IS_ACTIVE);
         passiveEmission();
     }, 1000);
 } else {
-    clearInterval(data_check);
-    console.log('>>>', DATA_FEED_IS_PASSIVE);
+    clearInterval(DATA_CHECK_TIMER);
+    console.log('DATA_FEED_IS_ACTIVE', DATA_FEED_IS_ACTIVE);
 }
 // }}}1
 
@@ -183,13 +176,17 @@ wss.on('connection', function(ws) {
     ; This section runs only on data update. ;
     ;---------------------------------------*/
 
-    // Plugin the passive emission hook. {{{1
-    // Plugin the active emission hook. {{{1
+    // Plugin the PASSIVE emission hook. {{{1
     passiveEmitter = function(input) {
-        console.log('passive');
-        console.log('------>', DATA_FEED_IS_ACTIVE);
         if(!DATA_FEED_IS_ACTIVE){
+            // Mimic an active transmission here. But update the feed flag to
+            // indicate a dropped data feed.
+            // Handle utility fields.
+            data_container.records['server_update'] = true;
+            data_container.records['client_input'] = false;
             data_container.records['feed_active'] = false;
+            data_container.flags['is_first_transmission'] = false;
+            // Handle data fields.
             data_container.package['fruit'] = 'void';
             data_container.package['price'] = -1.0;
             data_container.package['signature'] = 'void';
@@ -209,7 +206,9 @@ wss.on('connection', function(ws) {
             });
         }
     }
+    // }}}1
 
+    // Plugin the ACTIVE emission hook. {{{1
     emitter = function(input) {
         // Debug the input data stream.
         console.log('INPUT_STREAM:', input);
