@@ -122,6 +122,6 @@ if filereadable(g:vix_current_project.root . '/run.sh')
     " If the "run.sh" is not present, continue with the internal call.
 else
     let g:vix_current_project.dispatch.run.args =
-                \ 'node %'
+                \ '-cwd node %'
 endif
 " vim: ft=vim
