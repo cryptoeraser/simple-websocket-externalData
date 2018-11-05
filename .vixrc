@@ -1,0 +1,127 @@
+" ;-----------------------------------------------------------------------------
+" ; Local VIM Project Configuration File
+" ;-----------------------------------------------------------------------------
+
+" ;-----------------------------------------------------------------------------
+" ; Project Settings
+" ;-----------------------------------------------------------------------------
+let g:vix_current_project.root = g:localvimrc_script_dir
+let g:vix_current_project.name = 'javascript-concepts'
+
+" ;-----------------------------------------------------------------------------
+" ; Make (tmux/shell).
+" ;-----------------------------------------------------------------------------
+let g:vix_current_project.command.make.prefix =
+            \ 'echo "{prefix} No <make> rules defined." &&'
+let g:vix_current_project.command.make.body =
+            \ 'echo "{prefix} No <make> rules defined." &&'
+let g:vix_current_project.command.make.postfix =
+            \ 'echo "{prefix} No <make> rules defined."'
+
+" ;-----------------------------------------------------------------------------
+" ; Build (tmux/shell).
+" ;-----------------------------------------------------------------------------
+let g:vix_current_project.command.build.prefix =
+            \ 'echo "{prefix} No <build> rules defined." &&'
+let g:vix_current_project.command.build.body =
+            \ 'echo "{body} No <build> rules defined." &&'
+let g:vix_current_project.command.build.postfix =
+            \ 'echo "{postfix} No <build> rules defined."'
+
+" ;-----------------------------------------------------------------------------
+" ; Clean (tmux/shell).
+" ;-----------------------------------------------------------------------------
+let g:vix_current_project.command.clean.prefix =
+            \ 'echo "{prefix} No <clean> rules defined." &&'
+let g:vix_current_project.command.clean.body =
+            \ 'echo "{body} No <clean> rules defined." &&'
+let g:vix_current_project.command.clean.postfix =
+            \ 'echo "{postfix} No <clean> rules defined."'
+
+" ;-----------------------------------------------------------------------------
+" ; Test (tmux/shell).
+" ;-----------------------------------------------------------------------------
+let g:vix_current_project.command.test.prefix =
+            \ 'echo "{prefix} No <test> rules defined." &&'
+let g:vix_current_project.command.test.body =
+            \ 'echo "{body} No <test> rules defined." &&'
+let g:vix_current_project.command.test.postfix =
+            \ 'echo "{postfix} No <test> rules defined."'
+
+" ;-----------------------------------------------------------------------------
+" ; Run (tmux/shell).
+" ;-----------------------------------------------------------------------------
+let g:vix_current_project.command.run.prefix =
+            \ ''
+let g:vix_current_project.command.run.body =
+            \ 'node % && printf "done\n"'
+let g:vix_current_project.command.run.postfix =
+            \ ''
+
+" //////////////////////////////////////////////////////////////////////////////
+
+" ;-----------------------------------------------------------------------------
+" ; Make (vim-dispatch)
+" ;-----------------------------------------------------------------------------
+" First check for a "make.sh" script.
+if filereadable(g:vix_current_project.root . '/make.sh')
+    let g:vix_current_project.dispatch.make.args = 'cd ' .
+                \ g:vix_current_project.root . '; ' . './make.sh'
+    " If the "make.sh" is not present, continue with the internal call.
+else
+    let g:vix_current_project.dispatch.make.args =
+                \ 'echo "{make.args} No <make> rules defined."'
+endif
+
+" ;-----------------------------------------------------------------------------
+" ; Build (vim-dispatch)
+" ;-----------------------------------------------------------------------------
+" First check for a "build.sh" script.
+if filereadable(g:vix_current_project.root . '/build.sh')
+    let g:vix_current_project.dispatch.build.args = 'cd ' .
+                \ g:vix_current_project.root . '; ' . './build.sh'
+    " If the "build.sh" is not present, continue with the internal call.
+else
+    let g:vix_current_project.dispatch.build.args =
+                \ 'echo "{build.args} No <build> rules defined."'
+endif
+
+" ;-----------------------------------------------------------------------------
+" ; Clean (vim-dispatch)
+" ;-----------------------------------------------------------------------------
+" First check for a "clean.sh" script.
+if filereadable(g:vix_current_project.root . '/clean.sh')
+    let g:vix_current_project.dispatch.clean.args = 'cd ' .
+                \ g:vix_current_project.root . '; ' . './clean.sh'
+    " If the "clean.sh" is not present, continue with the internal call.
+else
+    let g:vix_current_project.dispatch.clean.args =
+                \ 'echo "{clean.args} No <clean> rules defined."'
+endif
+
+" ;-----------------------------------------------------------------------------
+" ; Test (vim-dispatch)
+" ;-----------------------------------------------------------------------------
+" First check for a "test.sh" script.
+if filereadable(g:vix_current_project.root . '/test.sh')
+    let g:vix_current_project.dispatch.test.args = 'cd ' .
+                \ g:vix_current_project.root . '; ' . './test.sh'
+    " If the "test.sh" is not present, continue with the internal call.
+else
+    let g:vix_current_project.dispatch.test.args =
+                \ 'echo "{test.args} No <test> rules defined."'
+endif
+
+" ;-----------------------------------------------------------------------------
+" ; Run (vim-dispatch)
+" ;-----------------------------------------------------------------------------
+" First check for a "run.sh" script.
+if filereadable(g:vix_current_project.root . '/run.sh')
+    let g:vix_current_project.dispatch.run.args = 'cd ' .
+                \ g:vix_current_project.root . '; ' . './run.sh'
+    " If the "run.sh" is not present, continue with the internal call.
+else
+    let g:vix_current_project.dispatch.run.args =
+                \ 'node %'
+endif
+" vim: ft=vim
