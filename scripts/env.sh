@@ -1,6 +1,7 @@
 #!/bin/bash
 # Setup a shorter prompt
 # Check for a duplicate initialisation events
+task=$1
 if [[  -z "$PS1_BACKUP" ]]; then
     # Running for the first time.
     echo -e ""
@@ -8,8 +9,12 @@ if [[  -z "$PS1_BACKUP" ]]; then
     echo -e ""
     # Backup the prompt.
     export PS1_BACKUP=$PS1;
-    # export PS1="[\e[36m\W\] \[\e[33m\]\[\e[1m\]$ \[\e[0m\]"
-    export PS1="[\[\e[33m\]\W\[\e[m\]]\n"
+    if [[ -z "$task" ]]; then
+        PS1='[\[\e[33m\]\W::default\[\e[m\]]\n'
+    else
+        PS1='[\[\e[33m\]\W::$task\[\e[m\]]\n'
+    fi
+
 else
     # Next run.
     echo -e ""

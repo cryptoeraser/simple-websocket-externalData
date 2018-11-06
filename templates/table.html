@@ -1,0 +1,119 @@
+<tr>
+    <td>
+      <table class="data_area" style="width:100%">
+        <tr id="first_row">
+          <th width="12%" align="center" valign="middle" class="label">
+            ITEM
+          </th>
+          <th width="12.5%" align="center" valign="middle" class="label">
+            PRICE
+          </th>
+          <th width="12.5%" align="center" valign="middle" class="label">
+            SIGNATURE
+          </th>
+          <th width="12.5%" align="center" valign="middle" class="label">
+            USER
+          </th>
+          <th width="10%" align="center" valign="middle" class="label">
+            ???
+          </th>
+          <th width="40%" align="center" valign="middle" class="label">
+            ???
+          </th>
+        </tr>
+        <tr id="second_row">
+          <td align="right" valign="middle" class="value">
+            banana
+          </td>
+          <td align="right" valign="middle" class="value">
+            0.0134
+          </td>
+          <td align="right" valign="middle" class="value">
+            ETH</td>
+          <td align="right" valign="middle" class="value">
+            mouse
+          </td>
+          <td class="nav" id="user_menu">
+            <div class="asset_menu">
+              <select name="assets" onchange=
+              "doSomething(this.selectedIndex);">
+                <option value="btc" selected="selected">
+                  BTC
+                </option>
+                <option value="eth">
+                  ETH
+                </option>
+                <option value="zec">
+                  ZEC
+                </option>
+                <option value="xmr">
+                  XMR
+                </option>
+              </select>
+            </div>
+          </td>
+          <td class="nav" id="user_input">
+            <div class="user_box">
+              <form action="/action_page.php">
+                <input type="text" name="user_input" value=
+                "mouse" /> <input type="submit" value="Send" />
+              </form>
+            </div>
+          </td>
+        </tr>
+      </table>
+      
+      <table width="800" border="2">
+        <tr>
+          <td align="center" valign="middle" bgcolor="#FF9900"><table width="100%" border="2">
+            <tr>
+              <!-- LEFT SIDE (start) -->
+              <td width="60%" align="center" valign="middle" bgcolor="#FFFF00"><table width="100%" border="1">
+                <tr>
+                  <th width="100%" align="center" valign="middle" class="label">ITEM</th>
+                  <th width="100%" align="center" valign="middle" class="label">PRICE</th>
+                  <th width="100%" align="center" valign="middle" class="label">SIGNATURE</th>
+                  <th width="100%" align="center" valign="middle" class="label">USER</th>
+                </tr>
+                <tr>
+                  <td align="right" valign="middle" class="value">banana</td>
+                  <td align="right" valign="middle" class="value">0.0134</td>
+                  <td align="right" valign="middle" class="value">ETH</td>
+                  <td align="right" valign="middle" class="value">mouse</td>
+                </tr>
+              </table>
+              </td>
+	          <!-- LEFT SIDE (end) -->
+              <!-- RIGHT SIDE (start) -->
+              <td width="40%" bgcolor="#66FF00"><table width="100%" border="1">
+                <tr>
+                  <th width="20%"><span class="label">???</span></th>
+                  <th width="80%"><span class="label">???</span></th>
+                </tr>
+                <tr>
+                  <td class="nav">
+                  	<div class="asset_menu">
+                    	<select name="assets2" onchange="doSomething(this.selectedIndex);">
+                      		<option value="btc" selected="selected">BTC</option>
+                      		<option value="eth">ETH</option>
+                      		<option value="zec">ZEC</option>
+                      		<option value="xmr">XMR</option>
+                    	</select>
+                  	</div></td>
+                  <td class="nav">
+                  	<div class="user_box">
+                  		<form action="/action_page.php">
+                    		<input type="text" name="user_input2" value="mouse"/>
+                    		<input type="submit" value="Send"/>
+                  		</form>
+					</div>
+                  </td>
+                </tr>
+              </table>
+              </td>
+              <!-- RIGHT SIDE (end) -->
+            </tr>
+          </table></td>
+        </tr>
+      </table>
+  </tr>

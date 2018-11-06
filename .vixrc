@@ -124,4 +124,8 @@ else
     let g:vix_current_project.dispatch.run.args =
                 \ '-cwd node %'
 endif
+
+" Extra Settings
+nnoremap <F6> :Start! -title=server node ws<CR>
+nnoremap <F7> :Start! -title=data node data_writer<CR>
 " vim: ft=vim
