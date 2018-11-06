@@ -38,14 +38,25 @@ ws.onmessage = function(payload) {
     // Handle incoming transmission.
     var transmission = JSON.parse(payload.data);
 
+    // The 'feed' related flag is sent as a single boolean from the server. We
+    // need to keep track of the dual state required by the client. All other
+    // flags are already dual state, for example:
+    //      'clien_input': false/true 'server_update': false/true etc.
+    if(transmission.records.feed_active){
+        transmission.records['feed_online'] = true;
+        transmission.records['feed_offline'] = false;
+    } else {
+        transmission.records['feed_online'] = false;
+        transmission.records['feed_offline'] = true;
+    }
+
     // If the package is empty, this means we are receiving the very first
     // transmission.
     if(transmission.flags['is_first_transmission'] === true){
         // Implement any steps related to a 'is_first_transmission' event here
         // if needed.
         updateStatus(transmission.records);
-    }
-    else {
+    } else {
         // This function is defined in an other script file called 'script.js'.
         // This a bad practice as we are relying on a shared global
         // scope. However, this might be ok for now.

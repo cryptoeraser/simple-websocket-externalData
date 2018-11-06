@@ -3,18 +3,49 @@ var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ port: 3000 });
 var fs = require('fs');
 
-// External Data Import {{{1
+// Globals
+var DATA_FEED_IS_ACTIVE = false;
+var CHANGING = false;
+var TIMER = null;
+var DATA_CHECK_TIMER = null;
+
+// Function to handle data feed check.{{{1
+function checkChanging() {
+    if (!CHANGING) {
+        clearInterval(TIMER);
+        TIMER = null;
+        // notifyNoChange();
+        // Reset the data-feed flag.
+        DATA_FEED_IS_ACTIVE = false;
+        passiveEmission();
+    }
+    CHANGING = false;
+}
+// }}}1
+
+// The 'External Data Loop' and the 'Data Feed Loop' are the two primary
+// driving forces here. Once the external data source is interrupted, in this
+// case the file update process stops, we still need to be able to push our
+// data container to the client. This is possible through the Data Feed Loop.
+// External Data Loop {{{1
+// Watch Loop: Works only when there is a change in the watched file.
 fs.watch('./data/object.json', (eventType, filename) => {
-    console.log(`event type is: ${eventType}`);
-    if (`${eventType}` === 'change'){
+    // console.log('event type is:', eventType);
+    if (eventType === 'change'){
         fs.readFile('./data/object.json', 'utf8', function (err, data) {
+            if (!TIMER ) {
+                TIMER = setInterval(checkChanging, 1000);
+            }
+            DATA_FEED_IS_ACTIVE = true;
+            CHANGING = true;
+
             let obj = {};
             try {
                 if (err) throw err;
                 obj = JSON.parse(data);
             } catch(e) {
                 // This is critical: When the JSON object is being dumped n
-              // real-time, a read of an incomplete file will break the data
+                // real-time, a read of an incomplete file will break the data
                 // stream. We should handle incomplete data here.
                 obj = { 'error': 'STREAM_BROKEN' };
             }
@@ -24,17 +55,24 @@ fs.watch('./data/object.json', (eventType, filename) => {
             // read time is too big.
             // obj.dataReadTime = new Date();
             // obj.delayBetweenWriteRead = obj.dataReadTime.getTime() - obj.dataInsertTime.getTime()
-            console.log(obj);
-            emission(obj);
+            // *** We need to call the hook inside the websocket block. ***
+            activeEmission(obj);
         });
     }
-
-    if (filename) {
-        console.log(`filename provided: ${filename}`);
-    } else {
-       console.log('filename not provided');
-    }
 });
+// }}}1
+
+// Data Feed Loop {{{1
+if(!DATA_FEED_IS_ACTIVE){
+    DATA_CHECK_TIMER = setInterval( function() {
+        console.log('DATA_FEED_IS_ACTIVE:', DATA_FEED_IS_ACTIVE);
+        // *** We need to call the hook inside the websocket block. ***
+        passiveEmission();
+    }, 1000);
+} else {
+    clearInterval(DATA_CHECK_TIMER);
+    console.log('DATA_FEED_IS_ACTIVE', DATA_FEED_IS_ACTIVE);
+}
 // }}}1
 
 // Template for the protocol container. {{{1
@@ -59,11 +97,18 @@ var data_container = {
 // }}}1
 
 // Define Emission Hooks {{{1
-var emitter = function() {};
+var activeEmitter = function() {};
+var passiveEmitter = function() {};
+// }}}1
 
-// Define a hook for the emission point.
-var emission = function(input) {
-    emitter(input);
+// Define a hook for the active emission point. {{{1
+var activeEmission = function(input) {
+    activeEmitter(input);
+};
+
+// Define a hook for the passive emission point.
+var passiveEmission = function(input) {
+    passiveEmitter(input);
 };
 // }}}1
 
@@ -83,10 +128,8 @@ wss.on('connection', function(ws) {
     ; This section runs only on a 'message receive from client' event. ;
     ;-----------------------------------------------------------------*/
 
+    // on.message {{{1
     ws.on('message', function(message) {
-        // TODO: We can implement an additiona emission hook entry here so that
-        // we can have clien messages and data stream.
-
         console.log('[server:onConnection:onMessage] received request:', message);
         // Handle the requests from the client.
         // Inject the request message into the signature.
@@ -122,12 +165,49 @@ wss.on('connection', function(ws) {
             client.send(transmission);
         });
     });
+    // }}}1
 
     /*---------------------------------------;
     ; This section runs only on data update. ;
     ;---------------------------------------*/
-    // Plugin the emission hook.
-    emitter = function(input) {
+
+    // Plug the PASSIVE emission hook. {{{1
+    passiveEmitter = function(input) {
+        if(!DATA_FEED_IS_ACTIVE){
+            // Debug the input data stream.
+            console.log('NO INPUT_STREAM.');
+
+            // Mimic an active transmission here. But update the feed flag to
+            // indicate a dropped data feed.
+            // Handle utility fields.
+            data_container.records['server_update'] = true;
+            data_container.records['client_input'] = false;
+            data_container.records['feed_active'] = false;
+            data_container.flags['is_first_transmission'] = false;
+            // Handle data fields.
+            data_container.package['fruit'] = 'void';
+            data_container.package['price'] = -1.0;
+            data_container.package['signature'] = 'void';
+
+            // Sending the payload to all clients.
+            wss.clients.forEach(function(client) {
+                // Prepare for transmission.
+                let transmission = JSON.stringify(data_container);
+
+                // Debug
+                console.log('[server:onConnection:onPassive] Sending:\n', transmission);
+                //
+                // Send the transmission.
+                client.send(transmission);
+                // Reser flag.
+                data_container.records['server_update'] = false;
+            });
+        }
+    }
+    // }}}1
+
+    // Plug the ACTIVE emission hook. {{{1
+    activeEmitter = function(input) {
         // Debug the input data stream.
         console.log('INPUT_STREAM:', input);
 
@@ -162,6 +242,7 @@ wss.on('connection', function(ws) {
             data_container.records['server_update'] = false;
         });
     };
+    // }}}1
 
     /*-------------------------------------------------;
     ; This section runs only once at first connection. ;
