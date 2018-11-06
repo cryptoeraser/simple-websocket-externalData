@@ -23,6 +23,10 @@ function checkChanging() {
 }
 // }}}1
 
+// The 'External Data Loop' and the 'Data Feed Loop' are the two primary
+// driving forces here. Once the external data source is interrupted, in this
+// case the file update process stops, we still need to be able to push our
+// data container to the client. This is possible through the Data Feed Loop.
 // External Data Loop {{{1
 // Watch Loop: Works only when there is a change in the watched file.
 fs.watch('./data/object.json', (eventType, filename) => {
@@ -51,7 +55,8 @@ fs.watch('./data/object.json', (eventType, filename) => {
             // read time is too big.
             // obj.dataReadTime = new Date();
             // obj.delayBetweenWriteRead = obj.dataReadTime.getTime() - obj.dataInsertTime.getTime()
-            emission(obj);
+            // *** We need to call the hook inside the websocket block. ***
+            activeEmission(obj);
         });
     }
 });
@@ -60,8 +65,8 @@ fs.watch('./data/object.json', (eventType, filename) => {
 // Data Feed Loop {{{1
 if(!DATA_FEED_IS_ACTIVE){
     DATA_CHECK_TIMER = setInterval( function() {
-        console.log('__CHECK_DATA_FEED__');
         console.log('DATA_FEED_IS_ACTIVE:', DATA_FEED_IS_ACTIVE);
+        // *** We need to call the hook inside the websocket block. ***
         passiveEmission();
     }, 1000);
 } else {
@@ -92,27 +97,20 @@ var data_container = {
 // }}}1
 
 // Define Emission Hooks {{{1
-var emitter = function() {};
+var activeEmitter = function() {};
 var passiveEmitter = function() {};
 // }}}1
 
-// Define a hook for the emission point. {{{1
-var emission = function(input) {
-    // console.log('__CALL:1');
-    if(DATA_FEED_IS_ACTIVE){
-        emitter(input);
-    }else{
-        passiveEmitter(input);
-    }
+// Define a hook for the active emission point. {{{1
+var activeEmission = function(input) {
+    activeEmitter(input);
 };
 
-// Define a hook for the emission point.
+// Define a hook for the passive emission point.
 var passiveEmission = function(input) {
-    // console.log('__CALL:2');
     passiveEmitter(input);
 };
 // }}}1
-
 
 // Intro.
 data_container['message'] = 'Greetings from the server.';
@@ -132,9 +130,6 @@ wss.on('connection', function(ws) {
 
     // on.message {{{1
     ws.on('message', function(message) {
-        // TODO: We can implement an additiona emission hook entry here so that
-        // we can have clien messages and data stream.
-
         console.log('[server:onConnection:onMessage] received request:', message);
         // Handle the requests from the client.
         // Inject the request message into the signature.
@@ -176,9 +171,12 @@ wss.on('connection', function(ws) {
     ; This section runs only on data update. ;
     ;---------------------------------------*/
 
-    // Plugin the PASSIVE emission hook. {{{1
+    // Plug the PASSIVE emission hook. {{{1
     passiveEmitter = function(input) {
         if(!DATA_FEED_IS_ACTIVE){
+            // Debug the input data stream.
+            console.log('NO INPUT_STREAM.');
+
             // Mimic an active transmission here. But update the feed flag to
             // indicate a dropped data feed.
             // Handle utility fields.
@@ -208,8 +206,8 @@ wss.on('connection', function(ws) {
     }
     // }}}1
 
-    // Plugin the ACTIVE emission hook. {{{1
-    emitter = function(input) {
+    // Plug the ACTIVE emission hook. {{{1
+    activeEmitter = function(input) {
         // Debug the input data stream.
         console.log('INPUT_STREAM:', input);
 
