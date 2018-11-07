@@ -3,40 +3,161 @@
     <head>
         <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no"/>
         <meta charset="utf-8">
-        <title>Websocket</title>
+        <title>Websocket Example</title>
         <link rel="stylesheet" href="style.css"/>
         <link href="https://fonts.googleapis.com/css?family=Chakra+Petch|Miriam+Libre|Titillium+Web" rel="stylesheet">
-    
     </head>
     <body>
-        <p class="intro" style="font-size:24px">Websocket Test</p>
-        <!-- Status Table (start) --!>
-        <table class="zui-table">
+        <table align="center" class="zui-table" width="720">
+            <!-- Title Area (start) -->
             <tr>
-                <th class="label">STATUS</th>
-                <td class="feedback" id="connected">connected</td>
-                <td class="feedback" id="disconnected">disconnected</td>
-                <th class="label">RESPONSE</th>
-                <td class="feedback" id="client_input">client_input</td>
-                <td class="feedback" id="server_update">server_update</td>
-                <th class="label">FEED</th>
-                <td class="feedback" id="feed_online">online</td>
-                <td class="feedback" id="feed_offline">offline</td>
+                <td align="left" class="intro">Websocket Test</td>
+            </tr>
+            <!-- Title Area (__end) -->
+            <!-- Data Area (start) -->
+            <tr>
+                <!-- PARRENT CONTAINER (start) -->
+                <td align="center" valign="middle">
+                    <table width="100%">
+                        <tr>
+                            <!-- LEFT SIDE (start) -->
+                            <td width="55%">
+                                <table class="data_area" width="100%">
+                                    <tr>
+                                        <th align="center" valign="middle" class="label">
+                                            ITEM
+                                        </th>
+                                        <th align="center" valign="middle" class="label">
+                                            PRICE
+                                        </th>
+                                        <th align="center" valign="middle" class="label">
+                                            SIGNATURE
+                                        </th>
+                                        <th align="center" valign="middle" class="label">
+                                            USER
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" valign="middle" id="item" class="value">
+                                            banana
+                                        </td>
+                                        <td align="right" valign="middle" id="price" class="value">
+                                            0.0134
+                                        </td>
+                                        <td align="right" valign="middle" id="signature" class="value">
+                                            ETH
+                                        </td>
+                                        <td align="right" valign="middle" id="user_data" class="value">
+                                            mouse
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <!-- LEFT SIDE (end) -->
+                            <!-- RIGHT SIDE (start) -->
+                            <td width="45%">
+                                <table class="nav_area" width="100%">
+                                    <tr>
+                                        <th align="center" valign="middle" class="label" width="20%">
+                                            SIGNATURE
+                                        </th>
+                                        <th align="center" valign="middle" class="label" width="80%">
+                                            INPUT
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="nav">
+                                            <div class="asset_menu">
+                                                <select name="assets" onchange="evalMenu(this.selectedIndex);">
+                                                    <option value="btc" selected="selected">
+                                                    BTC
+                                                    </option>
+                                                    <option value="eth">
+                                                    ETH
+                                                    </option>
+                                                    <option value="zec">
+                                                    ZEC
+                                                    </option>
+                                                    <option value="xmr">
+                                                    XMR
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="nav">
+                                            <div class="user_box">
+                                                <div onKeyPress="return checkSubmit(event)">
+                                                    <form name="myInput" action="#" method="get">
+                                                        <!-- Autosubmit on ENTER hack. -->
+                                                        <!-- https://stackoverflow.com/questions/29943/how&#45;to&#45;submit&#45;a&#45;form&#45;when&#45;the&#45;return&#45;key&#45;is&#45;pressed -->
+                                                        <input type="text" name="user_input" id="user_input">
+                                                        <input type="button" onclick="evalInputField();" id="button" value="Send"/>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <!-- RIGHT SIDE (end) -->
+                        </tr>
+                    </table>
+                </td>
+                <!-- PARRENT CONTAINER (end) -->
+            </tr>
+            <!-- Data Area (__end) -->
+            <!-- Status Area (start) -->
+            <tr>
+                <td>
+                    <table class="status_area" width="100%">
+                        <tr>
+                            <td align="right" valign="middle" class="label">
+                                <table>
+                                    <tr>
+                                        <th align="left">STATUS</th>
+                                        <td class="feedback" id="connected">connected</td>
+                                        <td class="feedback" id="disconnected">disconnected</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td align="right" valign="middle" class="label">
+                                <table>
+                                    <tr>
+                                        <th>RESPONSE</th>
+                                        <td class="feedback" id="client_input">client_input</td>
+                                        <td class="feedback" id="server_update">server_input</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td align="right" valign="middle" class="label">
+                                <table>
+                                    <tr>
+                                        <th>FEED</th>
+                                        <td class="feedback" id="feed_online">online</td>
+                                        <td class="feedback" id="feed_offline">offline</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <!-- Status Area (__end) -->
+            <tr>
+                <td>
+                    <table class="version_info" width="100%">
+                        <td align="right" class="version">v1.2.3.[4]</td>
+                    </table>
+                </td>
             </tr>
         </table>
-        <!-- Status Table (__end) --!>
-        <div class="messages"></div>
-        <p id="showData"></p>
-        <div class="asset_menu">
-            <select name="assets" onchange="doSomething(this.selectedIndex);">
-                <option value="btc" selected>BTC</option>
-                <option value="eth">ETH</option>
-                <option value="zec">ZEC</option>
-                <option value="xmr">XMR</option>
-            </select>
-        </div>
-        <input type="button" onclick="sendRequest();" id="button" value="Request" />
         <script src="ws-client.js"></script>
         <script src="./script.js"></script>
+        <!-- Reset the user input field. -->
+        <script> document.getElementById('user_input').value = '';</script>
     </body>
 </html>
+
+<!-- <input type="button" onclick="sendRequest();" id="button" value="Request" /> -->
+<!-- <script src="ws&#45;client.js"></script> -->
+<!-- <script src="./script.js"></script> -->

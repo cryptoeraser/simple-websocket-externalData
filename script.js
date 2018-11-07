@@ -67,4 +67,45 @@ function generateTable(object) {
 }
 // }}}1
 
+// DATA Controller {{{1
+function updateData(boolean_object){
+    // console.log('debug:', boolean_object);
+    let status = {
+        'connected': {
+            'on': '#117A65',
+            'off': '#D6DBDF',
+        },
+        'disconnected': {
+            'on': '#922B21',
+            'off': '#D6DBDF',
+        },
+        'client_input': {
+            'on': '#EB984E',
+            'off': '#D6DBDF',
+        },
+        'server_update': {
+            'on': '#EB984E',
+            'off': '#D6DBDF',
+        },
+        'feed_online' : {
+            'on': '#117A65',
+            'off': '#D6DBDF',
+        },
+        'feed_offline': {
+            'on': '#922B21',
+            'off': '#D6DBDF',
+        },
+    };
+
+    for (var k in boolean_object) {
+        if (status.hasOwnProperty(k)) {
+            // console.log('debug:', boolean_object[k]);
+            let state = boolean_object[k] ? status[k]['on'] : status[k]['off'];
+            // console.log('debug:', state);
+            document.getElementById(k).style.color = state;
+        }
+    }
+}
+// }}}1
+
 // vim: fdm=marker ts=4

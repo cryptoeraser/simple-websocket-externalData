@@ -3,12 +3,12 @@
 //
 // The stream should look something like this:
 //
-//      DATA_STREAM: { fruit: 'banana', price: 0.8612 }
+//      DATA_STREAM: { item: 'banana', price: 0.8612 }
 //      File has been created
 
 var fs = require('fs');
 
-// Fruit selector.
+// Item selector.
 var generator = function(){
     var fruitBasket = [
         'banana',
@@ -31,7 +31,7 @@ var generator = function(){
 setInterval(function() {
     // Create the data object.
     var my_data = {
-        'fruit': generator(),
+        'item': generator(),
         'price': (Math.random()).toFixed(4)
     };
 

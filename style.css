@@ -1,37 +1,128 @@
-p.intro {
-    font-family: 'Titillium Web', sans-serif;
-    font-size: 16px;
+.zui-table td.intro {
+  font-family: "Titillium Web", sans-serif;
+  font-size: 16px;
+}
+
+.zui-table td.version {
+  font-family: "Titillium Web", sans-serif;
+  font-size: 10px;
+  text-shadow: 1px 1px 1px #fff;
+  color: #A2D9CE;
 }
 
 .zui-table {
-    border: solid 1px #DDEEEE;
-    background-color: #DDEFEF;
-    border-collapse: collapse;
-    /* border-spacing: 4; */
-    /* height: 8px; */
-    font: normal 10px Arial, sans-serif;
+  border: solid 4px #ddeeee;
+  background-color: #ddefef;
+  border-radius: 8px;
 }
 
-.zui-table th.label {
-    background-color: #DDEFEF;
-    border: solid 2px #DDEEEE;
-    color: #336B6B;
-    padding: 12px;
-    height: 8px;
-    text-align: center;
-    text-shadow: 1px 1px 1px #fff;
-    /* font-family: 'Baloo', cursive; */
-    font-family: 'Miriam Libre', sans-serif;
+/*---------------------;
+; Status Area Properties ;
+;----------------------*/
+.zui-table table.status_area {
+  background-color: #d0ece7;
+  border: none;
+  border-radius: 8px;
 }
 
-.zui-table td[class^='feedback'] {
-    background-color: #F2F4F4;
-    /* border-color: #E74C3C; */
-    border: solid 2px #DDEEEE;
-    border-radius: 8px;
-    color: #D6DBDF;
-    padding: 10px;
-    height: 8px;
-    text-shadow: 1px 1px 1px #fff;
-    font-family: 'Chakra Petch', sans-serif;
+.zui-table table.status_area td.label {
+  background-color: #80deea;
+  border: none;
+  border-radius: 6px;
+  color: #013661;
+  padding: 2px;
+  text-shadow: 1px 1px 1px #fff;
+  /* font-family: 'Baloo', cursive; */
+  font-family: "Miriam Libre", sans-serif;
+  font-size: 10px;
+}
+
+.zui-table td[class^="feedback"] {
+  background-color: #eceff1;
+  border: none;
+  border-radius: 6px;
+  border-color: #80deea;
+  color: #d6dbdf;
+  padding: 4px;
+  height: 0px;
+  text-shadow: 1px 1px 1px #fff;
+  text-align: center;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 10px;
+}
+
+/*---------------------;
+; Data Area Properties ;
+;----------------------*/
+
+/* Data Area */
+table.data_area {
+  background-color: #fad7a0;
+  border: none;
+  border-radius: 6px;
+  color: #d35400;
+  padding: 2px;
+  /*font-family: 'Baloo', cursive;*/
+  font-family: "Miriam Libre", sans-serif;
+}
+
+table.nav_area {
+  background-color: #F0B27A;
+  border: none;
+  border-radius: 6px;
+  color: #F0B27A;
+  padding: 2px;
+  /*font-family: 'Baloo', cursive;*/
+  font-family: "Miriam Libre", sans-serif;
+}
+
+/* Data Area: Header Labels */
+table.nav_area th.label {
+  background-color: #F0B27A;
+  border: none;
+  color: #D35400;
+  padding: 2px;
+  text-shadow: 1px 1px 1px #fff;
+  /*font-family: 'Baloo', cursive;*/
+  font-family: "Miriam Libre", sans-serif;
+  font-size: 10px;
+}
+
+/* Data Area: Header Labels */
+table.data_area th.label {
+  background-color: #fad7a0;
+  border: none;
+  color: #af601a;
+  padding: 2px;
+  text-align: center;
+  text-shadow: 1px 1px 1px #fff;
+  /*font-family: 'Baloo', cursive;*/
+  font-family: "Miriam Libre", sans-serif;
+  font-size: 10px;
+}
+
+/* Data Area: Values */
+table.data_area td.value {
+  background-color: #fdebd0;
+  border: none;
+  border-radius: 8px;
+  color: #d35400;
+  padding: 2px;
+  text-align: right;
+  text-shadow: 1px 1px 1px #fff;
+  /*font-family: 'Baloo', cursive;*/
+  font-family: "Miriam Libre", sans-serif;
+  font-size: 14px;
+}
+
+/* Data Area: Navigation */
+table.data_area td.nav {
+  background-color: #F1C297;
+  border: none;
+  border-radius: 8px;
+  color: #336b6b;
+  text-align: center;
+  text-shadow: 1px 1px 1px #fff;
+  /*font-family: 'Baloo', cursive;*/
+  font-family: "Miriam Libre", sans-serif;
 }

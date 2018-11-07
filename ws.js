@@ -89,9 +89,10 @@ var data_container = {
         'is_first_transmission': true,
     },
     'package' : {
-        'fruit': null,
+        'item': null,
         'price': null,
         'signature': null,
+        'user_input': null,
     },
 };
 // }}}1
@@ -116,12 +117,13 @@ var passiveEmission = function(input) {
 data_container['message'] = 'Greetings from the server.';
 // Init the signature variable.
 // Our transmission dictionary will become:
-//      {'fruit': val, 'price': val, 'signature': val}
+//      {'item': val, 'price': val, 'signature': val}
 // to demonstrate the flow of data from the client to the server.
-let signature;
+let signature = null;
+let user_input = null;
 
 // This needs to be in the message section (onMessage) is still am option as we
-// might need to send config from the client. For example, a fruit name.
+// might need to send config from the client. For example, a item name.
 // console.log('[server:onMessage] received request:', message);
 wss.on('connection', function(ws) {
     /*-----------------------------------------------------------------;
@@ -130,20 +132,23 @@ wss.on('connection', function(ws) {
 
     // on.message {{{1
     ws.on('message', function(message) {
-        console.log('[server:onConnection:onMessage] received request:', message);
+        let incoming_transmission = JSON.parse(message);
+        console.log('[server:onConnection:onMessage] received request:', incoming_transmission);
         // Handle the requests from the client.
         // Inject the request message into the signature.
-        signature = message;
+        signature = incoming_transmission['signature'];
+        user_input = incoming_transmission['request'];
 
         // First update the JSON object by adding the signature component.
         // Guard against undefined signatures.
-        if(signature === undefined){
-            signature = 'None';
-        }
+        // if(signature === undefined){
+        //     signature = 'None';
+        // }
         // The 'input' argument is the pure object that has been imported
         // through the data stream. We are adding the extra 'signature' field
         // here.
         data_container.package['signature'] = signature;
+        data_container.package['user_input'] = user_input;
 
         // Update the communication record to indicate that the client has sent
         // the server some information.
@@ -185,18 +190,17 @@ wss.on('connection', function(ws) {
             data_container.records['feed_active'] = false;
             data_container.flags['is_first_transmission'] = false;
             // Handle data fields.
-            data_container.package['fruit'] = 'void';
+            data_container.package['item'] = 'void';
             data_container.package['price'] = -1.0;
             data_container.package['signature'] = 'void';
+            data_container.package['user_input'] = 'void';
 
             // Sending the payload to all clients.
             wss.clients.forEach(function(client) {
                 // Prepare for transmission.
                 let transmission = JSON.stringify(data_container);
-
                 // Debug
                 console.log('[server:onConnection:onPassive] Sending:\n', transmission);
-                //
                 // Send the transmission.
                 client.send(transmission);
                 // Reser flag.
@@ -213,29 +217,30 @@ wss.on('connection', function(ws) {
 
         // First update the JSON object by adding the signature component.
         // Guard against undefined signatures.
-        if(signature === undefined){
-            signature = 'None';
-        }
+        // if(signature === undefined){
+        //     signature = 'None';
+        // }
         // The 'input' argument is the pure object that has been imported
         // through the data stream. We are adding the extra 'signature' field
         // here.
-        input['signature'] = signature;
 
         // Then update carrier.
+        // Handle utility fields.
         data_container.records['server_update'] = true;
         data_container.records['client_input'] = false;
         data_container.records['feed_active'] = true;
         data_container.flags['is_first_transmission'] = false;
-        data_container['package']  = input;
+        // Handle data fields.
+        data_container['package'] = input;
+        data_container.package['signature'] = signature;
+        data_container.package['user_input'] = user_input;
 
         // Sending the payload to all clients.
         wss.clients.forEach(function(client) {
             // Prepare for transmission.
             let transmission = JSON.stringify(data_container);
-
             // Debug
             console.log('[server:onConnection:onUpdate] Sending:\n', transmission);
-            //
             // Send the transmission.
             client.send(transmission);
             // Reser flag.
@@ -251,10 +256,8 @@ wss.on('connection', function(ws) {
     wss.clients.forEach(function(client) {
         // Prepare for transmission.
         let transmission = JSON.stringify(data_container);
-
         // Debug
         console.log('[server:onConnection:init] Sending:\n', transmission);
-        //
         // Send the transmission.
         client.send(transmission);
     });

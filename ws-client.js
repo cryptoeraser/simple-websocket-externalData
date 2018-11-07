@@ -9,13 +9,15 @@
 //
 var ws = new WebSocket('ws://localhost:3000');
 
+// console.log('--->', document.forms[0].id);
+
 // onOpen {{{1
 ws.onopen = function() {
     updateStatus({'connected': true});
     updateStatus({'disconnected': false});
     updateStatus({'feed_online': true});
     updateStatus({'feed_offline': false});
-    sendRequest('BTC');
+    sendRequest({signature: 'BTC', request:null});
 };
 // }}}1
 
@@ -67,42 +69,67 @@ ws.onmessage = function(payload) {
         // Populate the tables.
         // Move outside this block if you need to populate the table even when
         // there are no values.
-        generateTable(transmission.package);
+        // generateTable(transmission.package);
     }
 };
 // }}}1
 
 // Drop-Down Menu {{{1
-function doSomething(index){
+function evalMenu(index){
     let req;
     switch (index) {
         case 0:
             req = 'BTC'
-            sendRequest(req);
+            sendRequest({signature: req, request: null});
             break;
         case 1:
             req = 'ETH'
-            sendRequest(req);
+            sendRequest({signature: req, request: null});
             break;
         case 2:
             req = 'ZEC'
-            sendRequest(req);
+            sendRequest({signature: req, request: null});
             break;
         case 3:
             req = 'XMR'
-            sendRequest(req);
+            sendRequest({signature: req, request: null});
             break;
         default:
             req = 'None';
+            sendRequest({signature: req, request: null});
+    }
+}
+// }}}1
+
+// Handle the send button. {{{1
+function evalInputField() {
+    let val = document.getElementById('user_input');
+    let copy_val = val.value;
+    // Debug
+    // console.log('debug_evalInputField:', val.value);
+    sendRequest({signature: null, request: val.value});
+    // Reset the text box.
+    val.value ='';
+}
+// }}}1
+
+// Handle send with ENTER. {{{1
+// From:
+//  https://stackoverflow.com/questions/29943/how-to-submit-a-form-when-the-return-key-is-pressed
+function checkSubmit(e) {
+    if(e && e.keyCode == 13) {
+        // Force field read.
+        evalInputField();
     }
 }
 // }}}1
 
 // Request with a button. {{{1
-function sendRequest(request) {
-    let _request = (typeof request === 'undefined') ? 'None' : request;
+function sendRequest(requestObject) {
+    let _request = (typeof requestObject === 'undefined') ? {signature: null, request: null} : requestObject;
     console.log('[client] send request:', _request);
-    ws.send(_request);
+    let transmission = JSON.stringify(_request);
+    ws.send(transmission);
 }
 // }}}1
 
