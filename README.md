@@ -1,6 +1,11 @@
 # simple-websocket-externalData
 This an improved version of the simple-websocket-setup project. The aim is to demonstrate the use of an independent signal source.
 
+<p align="center">
+<img width="800" alt="Final Product"
+src="https://github.com/cryptoeraser/simple-websocket-externalData/blob/master/docs/simple-websocket-externalData_demo.png">
+<p align="center"><font size="1">A still from the final product.</font></p>
+</p>
 
 ## The Data Writer ##
 This tiny script is responsible for generating a mock JSON file stream that is saved
