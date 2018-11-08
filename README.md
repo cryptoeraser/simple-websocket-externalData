@@ -19,7 +19,7 @@ src="https://github.com/cryptoeraser/simple-websocket-externalData/blob/master/d
 <p align="center"><font size="1">Demo results for the data_writer tool.</font></p>
 </p>
 
-## The Data Writer ##
+## The Server/Client Application ##
 The server/client workflow.
 
 This is the final state of my WebSocket test project. The aim was to build a simple server/client application that is capable of collecting, processing and exchanging data.
