@@ -39,16 +39,16 @@
                                     </tr>
                                     <tr>
                                         <td align="right" valign="middle" id="item" class="value">
-                                            banana
+                                            void
                                         </td>
                                         <td align="right" valign="middle" id="price" class="value">
-                                            0.0134
+                                            -1.0
                                         </td>
                                         <td align="right" valign="middle" id="signature" class="value">
-                                            ETH
+                                            none
                                         </td>
-                                        <td align="right" valign="middle" id="user_data" class="value">
-                                            mouse
+                                        <td align="right" valign="middle" id="user_input" class="value">
+                                            none
                                         </td>
                                     </tr>
                                 </table>
@@ -90,7 +90,7 @@
                                                     <form name="myInput" action="#" method="get">
                                                         <!-- Autosubmit on ENTER hack. -->
                                                         <!-- https://stackoverflow.com/questions/29943/how&#45;to&#45;submit&#45;a&#45;form&#45;when&#45;the&#45;return&#45;key&#45;is&#45;pressed -->
-                                                        <input type="text" name="user_input" id="user_input">
+                                                        <input type="text" name="user_field" id="user_field">
                                                         <input type="button" onclick="evalInputField();" id="button" value="Send"/>
                                                     </form>
                                                 </div>
@@ -146,7 +146,7 @@
             <tr>
                 <td>
                     <table class="version_info" width="100%">
-                        <td align="right" class="version">v1.2.3.[4]</td>
+                        <td align="right" class="version">v1.2.4.[1]</td>
                     </table>
                 </td>
             </tr>
@@ -157,7 +157,3 @@
         <script> document.getElementById('user_input').value = '';</script>
     </body>
 </html>
-
-<!-- <input type="button" onclick="sendRequest();" id="button" value="Request" /> -->
-<!-- <script src="ws&#45;client.js"></script> -->
-<!-- <script src="./script.js"></script> -->

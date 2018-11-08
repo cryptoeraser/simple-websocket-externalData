@@ -129,7 +129,6 @@ wss.on('connection', function(ws) {
     /*-----------------------------------------------------------------;
     ; This section runs only on a 'message receive from client' event. ;
     ;-----------------------------------------------------------------*/
-
     // on.message {{{1
     ws.on('message', function(message) {
         let incoming_transmission = JSON.parse(message);
@@ -137,7 +136,7 @@ wss.on('connection', function(ws) {
         // Handle the requests from the client.
         // Inject the request message into the signature.
         signature = incoming_transmission['signature'];
-        user_input = incoming_transmission['request'];
+        user_input = incoming_transmission['user_input'];
 
         // First update the JSON object by adding the signature component.
         // Guard against undefined signatures.
@@ -175,7 +174,6 @@ wss.on('connection', function(ws) {
     /*---------------------------------------;
     ; This section runs only on data update. ;
     ;---------------------------------------*/
-
     // Plug the PASSIVE emission hook. {{{1
     passiveEmitter = function(input) {
         if(!DATA_FEED_IS_ACTIVE){
@@ -192,8 +190,8 @@ wss.on('connection', function(ws) {
             // Handle data fields.
             data_container.package['item'] = 'void';
             data_container.package['price'] = -1.0;
-            data_container.package['signature'] = 'void';
-            data_container.package['user_input'] = 'void';
+            // data_container.package['signature'] = 'void';
+            // data_container.package['user_input'] = 'void';
 
             // Sending the payload to all clients.
             wss.clients.forEach(function(client) {
@@ -209,12 +207,20 @@ wss.on('connection', function(ws) {
         }
     }
     // }}}1
-
     // Plug the ACTIVE emission hook. {{{1
     activeEmitter = function(input) {
         // Debug the input data stream.
+        let cachedDataStream = data_container.package;
         console.log('INPUT_STREAM:', input);
 
+        // Handle data fields.
+        if(input.hasOwnProperty('error')){
+            // Handle broken stream here by re-using the previous data stream.
+            data_container['package'] = cachedDataStream;
+            console.log('(WARNING) Using CACHED_STREAM:', cachedDataStream);
+        } else {
+            data_container['package'] = input;
+        }
         // First update the JSON object by adding the signature component.
         // Guard against undefined signatures.
         // if(signature === undefined){
@@ -230,8 +236,7 @@ wss.on('connection', function(ws) {
         data_container.records['client_input'] = false;
         data_container.records['feed_active'] = true;
         data_container.flags['is_first_transmission'] = false;
-        // Handle data fields.
-        data_container['package'] = input;
+        // Handle client side package fields here.
         data_container.package['signature'] = signature;
         data_container.package['user_input'] = user_input;
 

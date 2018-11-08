@@ -9,7 +9,39 @@
 //
 var ws = new WebSocket('ws://localhost:3000');
 
-// console.log('--->', document.forms[0].id);
+// Request Container {{{1
+// Just like the data container on the server side, we should have a request
+// container on the client side.
+let request_container = (function(){
+    let signature;
+    let user_input;
+    return {
+        // Init method.
+        init: function() {
+            this.signature = 'none';
+            this.user_input = 'none';
+        },
+        // Getter method.
+        getValue: function(field) {
+            return this[field];
+        },
+        // Setter method.
+        setValue: function(field, val) {
+            this[field] = val;
+        },
+        // Return object.
+        getObject: function() {
+            return {
+                'signature': this['signature'],
+                'user_input': this['user_input'],
+            };
+        },
+    };
+})();
+// }}}1
+
+// Init the request container.
+request_container.init();
 
 // onOpen {{{1
 ws.onopen = function() {
@@ -17,7 +49,9 @@ ws.onopen = function() {
     updateStatus({'disconnected': false});
     updateStatus({'feed_online': true});
     updateStatus({'feed_offline': false});
-    sendRequest({signature: 'BTC', request:null});
+    // Set a default signature here.
+    request_container.setValue('signature', 'BTC');
+    sendRequest(request_container.getObject());
 };
 // }}}1
 
@@ -70,8 +104,18 @@ ws.onmessage = function(payload) {
         // Move outside this block if you need to populate the table even when
         // there are no values.
         // generateTable(transmission.package);
+        updateDataFields(transmission.package);
     }
 };
+// }}}1
+
+// Populate HTML data fields. {{{1
+function updateDataFields(dataObject){
+    for (var field in dataObject) {
+        // console.log('-debug-', field);
+        document.getElementById(field).innerHTML = dataObject[field];
+    }
+}
 // }}}1
 
 // Drop-Down Menu {{{1
@@ -80,34 +124,39 @@ function evalMenu(index){
     switch (index) {
         case 0:
             req = 'BTC'
-            sendRequest({signature: req, request: null});
+            request_container.setValue('signature', req);
+            sendRequest(request_container.getObject());
             break;
         case 1:
             req = 'ETH'
-            sendRequest({signature: req, request: null});
+            request_container.setValue('signature', req);
+            sendRequest(request_container.getObject());
             break;
         case 2:
             req = 'ZEC'
-            sendRequest({signature: req, request: null});
+            request_container.setValue('signature', req);
+            sendRequest(request_container.getObject());
             break;
         case 3:
             req = 'XMR'
-            sendRequest({signature: req, request: null});
+            request_container.setValue('signature', req);
+            sendRequest(request_container.getObject());
             break;
         default:
-            req = 'None';
-            sendRequest({signature: req, request: null});
+            req = 'none';
+            request_container.setValue('signature', req);
+            sendRequest(request_container.getObject());
     }
 }
 // }}}1
 
 // Handle the send button. {{{1
 function evalInputField() {
-    let val = document.getElementById('user_input');
-    let copy_val = val.value;
+    let val = document.getElementById('user_field');
     // Debug
     // console.log('debug_evalInputField:', val.value);
-    sendRequest({signature: null, request: val.value});
+    request_container.setValue('user_input', val.value);
+    sendRequest(request_container.getObject());
     // Reset the text box.
     val.value ='';
 }
@@ -127,7 +176,7 @@ function checkSubmit(e) {
 // Request with a button. {{{1
 function sendRequest(requestObject) {
     let _request = (typeof requestObject === 'undefined') ? {signature: null, request: null} : requestObject;
-    console.log('[client] send request:', _request);
+    // console.log('[client] send request:', _request);
     let transmission = JSON.stringify(_request);
     ws.send(transmission);
 }
