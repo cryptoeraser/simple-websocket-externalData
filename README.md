@@ -17,11 +17,23 @@ src="https://github.com/cryptoeraser/simple-websocket-externalData/blob/master/d
 ## The Data Writer ##
 The server/client workflow.
 
+This is the final state of my WebSocket test project. The aim was to build a simple server/client application that is capable of collecting, processing and exchanging data.
+
+The stream in this case-study is just mock data being written to a JSON file. The data stream could have been anything from market data to a sensor stream.
+
+The server is capable of processing the incoming data and passing it to the client. In return, the client is able to send messages to the server and alter the state of the data being emitted.
+
+The right side of the UI demonstrates the client side input. Users can change the signature through the drop-down menu or simply send inputs to the server using the text-input box.
+
+In this case "Signature" and "Input" are just there to demonstrate that data can be passed from the client to the server and the input will be returned to the user through the data stream.
+
 <p align="center">
 <img width="800" alt="Sample Result"
-src="https://github.com/cryptoeraser/simple-websocket-externalData/blob/master/docs/simple-websocket-externalData_serverClientDemo.gif">
+src="https://github.com/cryptoeraser/simple-websocket-externalData/blob/master/docs/simple-websocket-externalData_final.gif">
 <p align="center"><font size="1">Demo results for the server/client workflow.</font></p>
 </p>
+
+Higher quality demo video is available [on Vimeo](https://vimeo.com/299571259).
 
 ## Credits ##
 Special thanks to:
